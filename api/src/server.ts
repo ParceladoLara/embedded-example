@@ -1,0 +1,45 @@
+import express, { type Express } from "express";
+import dotenv from "dotenv";
+import { CompaniesRouter } from "./routes/companies";
+import { EmployeesRouter } from "./routes/employees";
+import { GatekeeperRouter } from "./routes/gatekeeper";
+import cors from "cors";
+import { WebhooksRouter } from "./routes/webhooks";
+
+const env = process.env.NODE_ENV || "dev";
+dotenv.config({ path: `.env.${env}` });
+
+export class Server {
+	private readonly app: Express;
+	private readonly port: number;
+
+	constructor(port: number = 3000) {
+		this.app = express();
+		this.port = port;
+
+		this.setupMiddleware();
+		this.setupRoutes();
+	}
+
+	private setupMiddleware(): void {
+		this.app.use(cors());
+		this.app.use(express.json());
+	}
+
+	private setupRoutes(): void {
+		this.app.use(new CompaniesRouter().router);
+		this.app.use(new EmployeesRouter().router);
+		this.app.use(new GatekeeperRouter().router);
+		this.app.use(new WebhooksRouter().router);
+	}
+
+	public start(): void {
+		this.app.listen(this.port, () => {
+			console.log(`Server running on: http://localhost:${this.port}`);
+			console.log(`Loaded environment variables from .env.${env}`);
+		});
+	}
+}
+
+const server = new Server(3000);
+server.start();
