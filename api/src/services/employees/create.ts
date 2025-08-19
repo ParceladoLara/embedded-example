@@ -1,37 +1,35 @@
-import type { Database } from "better-sqlite3";
-import { database } from "../../database";
+import { PrismaClient } from "@prisma/client";
 
 export interface CreateEmployeeDTO {
-	name: string;
-	cellphone: string;
-	cpf: string;
-	birthDate: string;
-	email: string;
-	companyId: number;
-	laraId?: string;
+  name: string;
+  cellphone: string;
+  cpf: string;
+  birthDate: string;
+  companyId: number;
+  laraId?: string;
 }
 
 export class CreateEmployeeService {
-	private readonly db: Database;
+  private readonly prisma: PrismaClient;
 
-	constructor(db: Database = database) {
-		this.db = db;
-	}
+  constructor(prisma: PrismaClient = new PrismaClient()) {
+    this.prisma = prisma;
+  }
 
-	public execute(data: CreateEmployeeDTO): void {
-		const stmt = this.db.prepare(`
-      INSERT INTO employees (
-        name, cellphone, cpf, birthDate, email, companyId
-      ) VALUES (?, ?, ?, ?, ?, ?)
-    `);
+  public async execute(data: CreateEmployeeDTO) {
+    const employee = await this.prisma.employee.create({
+      data: {
+        name: data.name,
+        cellphone: data.cellphone,
+        cpf: data.cpf,
+        dateOfBirth: data.birthDate,
+        company: {
+          connect: { id: data.companyId },
+        },
+        lara_id: data?.laraId ?? null,
+      },
+    });
 
-		stmt.run(
-			data.name,
-			data.cellphone,
-			data.cpf,
-			data.birthDate,
-			data.email,
-			data.companyId,
-		);
-	}
+    return employee;
+  }
 }

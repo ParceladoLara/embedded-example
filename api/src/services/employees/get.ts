@@ -1,23 +1,36 @@
-import type { Database } from "better-sqlite3";
-import { database } from "../../database";
+import { Employee, Prisma, PrismaClient } from "@prisma/client";
 import type { CreateEmployeeDTO } from "./create";
 
 export interface GetEmployeeDTO extends CreateEmployeeDTO {
-	id: number;
-	laraId?: string;
+  id: number;
+  laraId?: string;
 }
 
 export class GetEmployeeService {
-	private readonly db: Database;
+  private readonly prisma: PrismaClient;
 
-	constructor(db: Database = database) {
-		this.db = db;
-	}
+  constructor(prisma: PrismaClient = new PrismaClient()) {
+    this.prisma = prisma;
+  }
 
-	public execute(id: number): GetEmployeeDTO | null {
-		const stmt = this.db.prepare(`SELECT * FROM employees WHERE id = ?`);
-		const employee = stmt.get(id) as GetEmployeeDTO | undefined;
+  public async execute(query: number | string): Promise<Employee | null> {
+    let filter: Prisma.EmployeeFindFirstArgs;
 
-		return employee ?? null;
-	}
+    if (!isNaN(Number(query))) {
+      filter = {
+        where: { id: Number(query) },
+      };
+    } else {
+      filter = {
+        where: { lara_id: query.toString() },
+      };
+    }
+
+    const employee = await this.prisma.employee.findFirst({
+      ...filter,
+      include: { company: true },
+    });
+
+    return employee;
+  }
 }

@@ -1,22 +1,25 @@
-import type { Database } from "better-sqlite3";
-import { database } from "../../database";
+import { PrismaClient } from "@prisma/client";
 
 export interface CreateCompanyDTO {
-	cnpj: string;
-	name: string;
+  cnpj: string;
+  name: string;
 }
 
 export class CreateCompanyService {
-	private readonly db: Database;
+  private readonly prisma: PrismaClient;
 
-	constructor(db: Database = database) {
-		this.db = db;
-	}
+  constructor(prisma: PrismaClient = new PrismaClient()) {
+    this.prisma = prisma;
+  }
 
-	public execute({ cnpj, name }: CreateCompanyDTO): void {
-		const stmt = this.db.prepare(
-			"INSERT INTO companies (cnpj, name) VALUES (?, ?)",
-		);
-		stmt.run(cnpj, name);
-	}
+  public async execute({ cnpj, name }: CreateCompanyDTO) {
+    const company = await this.prisma.company.create({
+      data: {
+        cnpj,
+        name,
+      },
+    });
+
+    return company;
+  }
 }

@@ -1,0 +1,70 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Company {
+  id     Int     @id @default(autoincrement())
+  cnpj   String  @unique
+  name   String
+  apiKey String?
+
+  employees Employee[]
+  patients  Patient[]
+}
+
+model Employee {
+  id          Int     @id @default(autoincrement())
+  name        String
+  cellphone   String
+  cpf         String
+  dateOfBirth String
+  lara_id     String?
+
+  company_id Int
+  company    Company @relation(fields: [company_id], references: [id])
+}
+
+model Address {
+  id         Int     @id @default(autoincrement())
+  zip        String
+  city       String
+  state      String
+  street     String
+  number     Int
+  complement String?
+
+  patients Patient[]
+}
+
+model Patient {
+  id             Int     @id @default(autoincrement())
+  name           String
+  cellphone      String
+  cpf            String
+  dateOfBirth    String
+  email          String
+  collection_url String?
+
+  company_id Int
+  company    Company @relation(fields: [company_id], references: [id])
+
+  address_id Int
+  address    Address @relation(fields: [address_id], references: [id])
+
+  appointments Appointment[]
+}
+
+model Appointment {
+  id         Int     @id @default(autoincrement())
+  value      Int
+  patient_id Int
+  patient    Patient @relation(fields: [patient_id], references: [id])
+
+  lara_proposal_id     String?
+  lara_proposal_status String?
+}
