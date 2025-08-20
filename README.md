@@ -1,20 +1,37 @@
 # Lara Health
 
-Uma plataforma abrangente de gestão de saúde construída com tecnologias web modernas. Este monorepo contém tanto o backend da API quanto a aplicação frontend para gerenciar dados de saúde, registros de saúde de funcionários e programas de saúde corporativa.
+Uma plataforma abrangente de gestão de saúde construída com tecnologias web modernas. Este monorepo contém tanto o backend da API quanto a aplicação frontend para gerenciar dados
+
+## Integração Financeira Lara
+
+A plataforma possui integração completa com os serviços financeiros da Lara:
+
+### Fluxo de Propostas Financeiras:
+1. **Inicialização**: Criação de proposta financeira através da API Lara
+2. **Cálculo de Parcelas**: Uso de módulo WASM para cálculos de planos de pagamento
+3. **Finalização**: Conclusão do contrato e envio via WhatsApp
+4. **Rastreamento**: Monitoramento do status da proposta durante todo o processo
+
+### Componentes Principais:
+- **Cliente Lara API**: Comunicação com serviços externos da Lara
+- **Autenticação JWT**: Acesso seguro à API Lara com tokens de empresa
+- **Módulo WASM**: Cálculos de alta performance para planos de pagamento
+- **Gestão de Status**: Controle do estado das propostas nos registros de consultas
+- **Gestão de Status**: Controle do estado dos contratos ao processar os webhooks 
 
 ## 🏗️ Arquitetura
 
 Este projeto está estruturado como um monorepo PNPM workspace com dois pacotes principais:
 
-- **API** (`/api`) - Backend Node.js/Express com banco de dados SQLite
-- **Frontend** (`/example`) - Aplicação React com componentes de UI modernos
+- **API** (`/api`) - Backend Node.js/Express com banco de dados MySQL e Prisma ORM
+- **Frontend** (`/app`) - Aplicação React com componentes de UI modernos e integração com serviços financeiros Lara
 
 ## 🚀 Início Rápido
 
 ### Pré-requisitos
 
-- Node.js (v18 ou superior)
-- PNPM (v9 ou superior)
+- Node.js (v22 ou superior)
+- PNPM (v10 ou superior)
 
 ### Instalação
 
@@ -45,14 +62,19 @@ lara-health/
 │   │   ├── controllers/     # Manipuladores de requisição
 │   │   ├── services/        # Lógica de negócio
 │   │   ├── routes/          # Rotas da API
-│   │   ├── database/        # Configuração do banco e arquivo SQLite
+│   │   ├── database/        # Configuração do banco e seeding
+│   │   ├── api/             # Cliente Lara API
+│   │   ├── types/           # Tipos TypeScript para Lara
 │   │   └── server.ts        # Configuração do servidor Express
+│   ├── prisma/
+│   │   └── schema.prisma    # Schema do banco Prisma
 │   └── package.json
-├── example/                 # Aplicação Frontend
+├── app/                 # Aplicação Frontend
 │   ├── src/
 │   │   ├── components/      # Componentes React
 │   │   ├── routes/          # Rotas do TanStack Router
 │   │   ├── services/        # Serviços cliente da API
+│   │   ├── types/           # Tipos TypeScript
 │   │   └── main.tsx         # Ponto de entrada da aplicação
 │   └── package.json
 └── package.json            # Configuração do workspace raiz
@@ -63,8 +85,9 @@ lara-health/
 ### Backend (API)
 - **Runtime**: Node.js com TypeScript
 - **Framework**: Express.js
-- **Banco de Dados**: SQLite com better-sqlite3
+- **Banco de Dados**: MySQL com Prisma ORM
 - **Autenticação**: JWT (JSON Web Tokens)
+- **Integrações Externas**: API Lara para serviços financeiros
 - **Qualidade de Código**: Biome para linting e formatação
 - **Desenvolvimento**: ts-node-dev para hot reloading
 
@@ -73,32 +96,45 @@ lara-health/
 - **Ferramenta de Build**: Vite
 - **Roteamento**: TanStack Router
 - **Componentes UI**: Primitivos do Radix UI
-- **Estilização**: CSS com padrões de design modernos
+- **Estilização**: CSS com Tailwind CSS para design moderno
 - **Gráficos**: Recharts para visualização de dados
-- **Ícones**: Tabler Icons
+- **Estado**: TanStack Query para gerenciamento de estado do servidor
+- **Cálculos Financeiros**: WASM para cálculos de planos de pagamento
+- **Ícones**: Tabler Icons e Lucide React
 - **Desenvolvimento**: Servidor dev do Vite com HMR
 
 ## 🏥 Funcionalidades
 
 ### Funcionalidade Principal
-- **Gestão de Empresas**: Criar e gerenciar organizações de saúde
-- **Gestão de Funcionários**: Gerenciar registros e dados de saúde dos funcionários
-- **Autenticação**: Login seguro e gestão de usuários
+- **Gestão de Empresas**: Criar e gerenciar organizações de saúde com chaves API para integração Lara
+- **Gestão de Funcionários**: Gerenciar registros e dados de saúde dos funcionários com vinculação ao Lara ID
+- **Gestão de Pacientes**: Sistema completo de cadastro de pacientes com informações pessoais e endereços
+- **Sistema de Consultas**: Agendamento e gerenciamento de consultas médicas com integração financeira
+- **Propostas Financeiras**: Fluxo completo de criação e finalização de propostas através da API Lara
+- **Planos de Pagamento**: Cálculo e visualização de planos de pagamento com módulo WASM
+- **Autenticação**: Login seguro e gestão de usuários com SSO via Lara
 - **Dashboard**: Gráficos interativos e análises de saúde
 - **Tabelas de Dados**: Visualizações de dados de saúde ordenáveis e filtráveis
 
 ### Endpoints da API
 - **Empresas**: `/company` - Operações CRUD de empresas
-- **Funcionários**: Endpoints de gestão de funcionários
+- **Funcionários**: `/employee`, `/employees` - Gestão de funcionários
+- **Pacientes**: `/patient`, `/patients` - Gestão completa de pacientes
+- **Consultas**: `/appointment`, `/appointments` - Sistema de consultas médicas
+- **Lara**: `/initialize-lara-proposal`, `/complete-lara-proposal` - Fluxo de propostas financeiras
 - **Autenticação**: `/login` - Autenticação de usuários
 - **Webhooks**: Integrações com sistemas externos
 
 ### Funcionalidades do Frontend
 - Dashboard responsivo com métricas de saúde
-- Visualização interativa de dados
+- Interface completa para gestão de pacientes e consultas
+- Fluxo de propostas Lara com visualização de planos de pagamento
+- Cálculo interativo de parcelas com módulo WASM
+- Visualização interativa de dados com Recharts
 - Barra lateral de navegação amigável
-- Atualizações de dados em tempo real
-- Componentes de UI acessíveis
+- Atualizações de dados em tempo real com TanStack Query
+- Componentes de UI acessíveis com Radix UI
+- Interface responsiva com Tailwind CSS
 
 ## 🔧 Desenvolvimento
 
@@ -126,9 +162,13 @@ pnpm start          # Iniciar tanto API quanto frontend
 pnpm start:dev      # Iniciar API em modo desenvolvimento
 pnpm start:stage    # Iniciar API em modo homologação
 pnpm start:prod     # Iniciar API em modo produção
+pnpm db:push        # Aplicar alterações do schema no banco
+pnpm db:seed        # Executar seeding do banco de dados
+pnpm compose        # Iniciar containers Docker (MySQL)
+pnpm prisma:studio  # Abrir Prisma Studio para visualização do banco
 ```
 
-#### Frontend (`/example`)
+#### Frontend (`/app`)
 ```bash
 pnpm dev            # Iniciar servidor de desenvolvimento
 pnpm build          # Build para produção
@@ -138,17 +178,26 @@ pnpm lint           # Executar ESLint
 
 ### Banco de Dados
 
-O projeto usa SQLite para armazenamento de dados:
-- Arquivo do banco: `api/src/database/database.sqlite`
-- ORM: Implementação customizada com better-sqlite3
-- Suporta migrações e seeding
+O projeto usa MySQL com Prisma ORM para armazenamento de dados:
+- **ORM**: Prisma para operações type-safe no banco
+- **Migrações**: Sistema de migrações do Prisma
+- **Schema**: Definido em `api/prisma/schema.prisma`
+- **Seeding**: Scripts de inicialização de dados
+- **Modelos Principais**:
+  - **Company**: Empresas com chaves API para integração Lara
+  - **Employee**: Funcionários com Lara ID para autenticação SSO
+  - **Patient**: Pacientes com informações completas e endereços
+  - **Appointment**: Consultas com tracking de propostas financeiras
+  - **Address**: Informações geográficas dos pacientes
 
 ## 🔐 Autenticação
 
-A plataforma usa autenticação baseada em JWT:
+A plataforma usa autenticação baseada em JWT com integração Lara:
 - Endpoint de login fornece tokens de acesso
 - Rotas protegidas requerem tokens JWT válidos
 - Suporta onboarding de usuários e acesso à plataforma
+- Integração SSO com Lara API através de Lara ID
+- Gestão de chaves API por empresa para acesso aos serviços Lara
 
 ## 🎨 Componentes UI
 
@@ -159,37 +208,18 @@ O frontend inclui um conjunto abrangente de componentes UI:
 - **Layout**: Sheets, drawers, abas, separadores
 - **Feedback**: Toasts, skeletons, tooltips
 
-## 📊 Análises de Saúde
+## � Integração Financeira Lara
 
-A plataforma fornece várias funcionalidades de análise de saúde:
-- Gráficos de área interativos para tendências de saúde
-- Tabelas de dados para registros detalhados de saúde
-- Cards do dashboard com métricas-chave de saúde
-- Capacidades de monitoramento de saúde em tempo real
+A plataforma possui integração completa com os serviços financeiros da Lara:
 
-## 🤝 Contribuindo
+### Fluxo de Propostas Financeiras:
+1. **Inicialização**: Criação de proposta financeira através da API Lara
+2. **Cálculo de Parcelas**: Uso de módulo WASM para cálculos de planos de pagamento
+3. **Finalização**: Conclusão do contrato e envio via WhatsApp
+4. **Rastreamento**: Monitoramento do status da proposta durante todo o processo
 
-1. Faça um fork do repositório
-2. Crie uma branch para sua funcionalidade
-3. Faça suas alterações
-4. Certifique-se de que os testes passem e o código esteja formatado
-5. Envie um pull request
-
-### Estilo de Código
-- Use TypeScript em todo o projeto
-- Siga os padrões de arquitetura existentes
-- Use Biome para formatação e linting de código
-- Implemente tratamento adequado de erros
-- Escreva mensagens de commit descritivas
-
-## 📝 Licença
-
-Este projeto está licenciado sob a Licença ISC.
-
-## 🆘 Suporte
-
-Para suporte e dúvidas, por favor abra uma issue no repositório ou entre em contato com a equipe de desenvolvimento.
-
----
-
-Construído com ❤️ para uma melhor gestão de saúde
+### Componentes Principais:
+- **Cliente Lara API**: Comunicação com serviços externos da Lara
+- **Autenticação JWT**: Acesso seguro à API com tokens de empresa
+- **Módulo WASM**: Cálculos de alta performance para planos de pagamento
+- **Gestão de Status**: Controle do estado das propostas nos registros de consultas

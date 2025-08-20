@@ -73,7 +73,7 @@ importers:
         specifier: ^5.8.3
         version: 5.9.2
 
-  example:
+  app:
     dependencies:
       '@dnd-kit/core':
         specifier: ^6.3.1
