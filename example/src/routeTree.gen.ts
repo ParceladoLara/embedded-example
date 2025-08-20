@@ -11,8 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppShellRouteImport } from './routes/_appShell'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AppShellLaraRouteImport } from './routes/_appShell/lara'
-import { Route as AppShellHomeRouteImport } from './routes/_appShell/home'
+import { Route as AppShellPatientsIndexRouteImport } from './routes/_appShell/patients/index'
+import { Route as AppShellLaraIndexRouteImport } from './routes/_appShell/lara/index'
+import { Route as AppShellHomeIndexRouteImport } from './routes/_appShell/home/index'
+import { Route as AppShellAppointmentsIndexRouteImport } from './routes/_appShell/appointments/index'
 
 const AppShellRoute = AppShellRouteImport.update({
   id: '/_appShell',
@@ -23,40 +25,64 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppShellLaraRoute = AppShellLaraRouteImport.update({
-  id: '/lara',
-  path: '/lara',
+const AppShellPatientsIndexRoute = AppShellPatientsIndexRouteImport.update({
+  id: '/patients/',
+  path: '/patients/',
   getParentRoute: () => AppShellRoute,
 } as any)
-const AppShellHomeRoute = AppShellHomeRouteImport.update({
-  id: '/home',
-  path: '/home',
+const AppShellLaraIndexRoute = AppShellLaraIndexRouteImport.update({
+  id: '/lara/',
+  path: '/lara/',
   getParentRoute: () => AppShellRoute,
 } as any)
+const AppShellHomeIndexRoute = AppShellHomeIndexRouteImport.update({
+  id: '/home/',
+  path: '/home/',
+  getParentRoute: () => AppShellRoute,
+} as any)
+const AppShellAppointmentsIndexRoute =
+  AppShellAppointmentsIndexRouteImport.update({
+    id: '/appointments/',
+    path: '/appointments/',
+    getParentRoute: () => AppShellRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/home': typeof AppShellHomeRoute
-  '/lara': typeof AppShellLaraRoute
+  '/appointments': typeof AppShellAppointmentsIndexRoute
+  '/home': typeof AppShellHomeIndexRoute
+  '/lara': typeof AppShellLaraIndexRoute
+  '/patients': typeof AppShellPatientsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/home': typeof AppShellHomeRoute
-  '/lara': typeof AppShellLaraRoute
+  '/appointments': typeof AppShellAppointmentsIndexRoute
+  '/home': typeof AppShellHomeIndexRoute
+  '/lara': typeof AppShellLaraIndexRoute
+  '/patients': typeof AppShellPatientsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_appShell': typeof AppShellRouteWithChildren
-  '/_appShell/home': typeof AppShellHomeRoute
-  '/_appShell/lara': typeof AppShellLaraRoute
+  '/_appShell/appointments/': typeof AppShellAppointmentsIndexRoute
+  '/_appShell/home/': typeof AppShellHomeIndexRoute
+  '/_appShell/lara/': typeof AppShellLaraIndexRoute
+  '/_appShell/patients/': typeof AppShellPatientsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/home' | '/lara'
+  fullPaths: '/' | '/appointments' | '/home' | '/lara' | '/patients'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/home' | '/lara'
-  id: '__root__' | '/' | '/_appShell' | '/_appShell/home' | '/_appShell/lara'
+  to: '/' | '/appointments' | '/home' | '/lara' | '/patients'
+  id:
+    | '__root__'
+    | '/'
+    | '/_appShell'
+    | '/_appShell/appointments/'
+    | '/_appShell/home/'
+    | '/_appShell/lara/'
+    | '/_appShell/patients/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -80,31 +106,49 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_appShell/lara': {
-      id: '/_appShell/lara'
-      path: '/lara'
-      fullPath: '/lara'
-      preLoaderRoute: typeof AppShellLaraRouteImport
+    '/_appShell/patients/': {
+      id: '/_appShell/patients/'
+      path: '/patients'
+      fullPath: '/patients'
+      preLoaderRoute: typeof AppShellPatientsIndexRouteImport
       parentRoute: typeof AppShellRoute
     }
-    '/_appShell/home': {
-      id: '/_appShell/home'
+    '/_appShell/lara/': {
+      id: '/_appShell/lara/'
+      path: '/lara'
+      fullPath: '/lara'
+      preLoaderRoute: typeof AppShellLaraIndexRouteImport
+      parentRoute: typeof AppShellRoute
+    }
+    '/_appShell/home/': {
+      id: '/_appShell/home/'
       path: '/home'
       fullPath: '/home'
-      preLoaderRoute: typeof AppShellHomeRouteImport
+      preLoaderRoute: typeof AppShellHomeIndexRouteImport
+      parentRoute: typeof AppShellRoute
+    }
+    '/_appShell/appointments/': {
+      id: '/_appShell/appointments/'
+      path: '/appointments'
+      fullPath: '/appointments'
+      preLoaderRoute: typeof AppShellAppointmentsIndexRouteImport
       parentRoute: typeof AppShellRoute
     }
   }
 }
 
 interface AppShellRouteChildren {
-  AppShellHomeRoute: typeof AppShellHomeRoute
-  AppShellLaraRoute: typeof AppShellLaraRoute
+  AppShellAppointmentsIndexRoute: typeof AppShellAppointmentsIndexRoute
+  AppShellHomeIndexRoute: typeof AppShellHomeIndexRoute
+  AppShellLaraIndexRoute: typeof AppShellLaraIndexRoute
+  AppShellPatientsIndexRoute: typeof AppShellPatientsIndexRoute
 }
 
 const AppShellRouteChildren: AppShellRouteChildren = {
-  AppShellHomeRoute: AppShellHomeRoute,
-  AppShellLaraRoute: AppShellLaraRoute,
+  AppShellAppointmentsIndexRoute: AppShellAppointmentsIndexRoute,
+  AppShellHomeIndexRoute: AppShellHomeIndexRoute,
+  AppShellLaraIndexRoute: AppShellLaraIndexRoute,
+  AppShellPatientsIndexRoute: AppShellPatientsIndexRoute,
 }
 
 const AppShellRouteWithChildren = AppShellRoute._addFileChildren(

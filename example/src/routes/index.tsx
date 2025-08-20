@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/common/components/shadcn/ui/button";
+import { Input } from "@/common/components/shadcn/ui/input";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import "./login.css";
