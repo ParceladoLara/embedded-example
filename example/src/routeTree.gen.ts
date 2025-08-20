@@ -15,8 +15,10 @@ import { Route as AppShellPatientsIndexRouteImport } from './routes/_appShell/pa
 import { Route as AppShellLaraIndexRouteImport } from './routes/_appShell/lara/index'
 import { Route as AppShellHomeIndexRouteImport } from './routes/_appShell/home/index'
 import { Route as AppShellAppointmentsIndexRouteImport } from './routes/_appShell/appointments/index'
+import { Route as AppShellLaraProposalContractSentIndexRouteImport } from './routes/_appShell/lara-proposal/contract-sent/index'
 import { Route as AppShellAppointmentsCreateIndexRouteImport } from './routes/_appShell/appointments/create/index'
 import { Route as AppShellLaraProposalInitializeAppointmentIdIndexRouteImport } from './routes/_appShell/lara-proposal/initialize/$appointmentId/index'
+import { Route as AppShellLaraProposalCompleteAppointmentIdIndexRouteImport } from './routes/_appShell/lara-proposal/complete/$appointmentId/index'
 import { Route as AppShellAppointmentsConfirmIdIndexRouteImport } from './routes/_appShell/appointments/confirm/$id/index'
 
 const AppShellRoute = AppShellRouteImport.update({
@@ -49,6 +51,12 @@ const AppShellAppointmentsIndexRoute =
     path: '/appointments/',
     getParentRoute: () => AppShellRoute,
   } as any)
+const AppShellLaraProposalContractSentIndexRoute =
+  AppShellLaraProposalContractSentIndexRouteImport.update({
+    id: '/lara-proposal/contract-sent/',
+    path: '/lara-proposal/contract-sent/',
+    getParentRoute: () => AppShellRoute,
+  } as any)
 const AppShellAppointmentsCreateIndexRoute =
   AppShellAppointmentsCreateIndexRouteImport.update({
     id: '/appointments/create/',
@@ -59,6 +67,12 @@ const AppShellLaraProposalInitializeAppointmentIdIndexRoute =
   AppShellLaraProposalInitializeAppointmentIdIndexRouteImport.update({
     id: '/lara-proposal/initialize/$appointmentId/',
     path: '/lara-proposal/initialize/$appointmentId/',
+    getParentRoute: () => AppShellRoute,
+  } as any)
+const AppShellLaraProposalCompleteAppointmentIdIndexRoute =
+  AppShellLaraProposalCompleteAppointmentIdIndexRouteImport.update({
+    id: '/lara-proposal/complete/$appointmentId/',
+    path: '/lara-proposal/complete/$appointmentId/',
     getParentRoute: () => AppShellRoute,
   } as any)
 const AppShellAppointmentsConfirmIdIndexRoute =
@@ -75,7 +89,9 @@ export interface FileRoutesByFullPath {
   '/lara': typeof AppShellLaraIndexRoute
   '/patients': typeof AppShellPatientsIndexRoute
   '/appointments/create': typeof AppShellAppointmentsCreateIndexRoute
+  '/lara-proposal/contract-sent': typeof AppShellLaraProposalContractSentIndexRoute
   '/appointments/confirm/$id': typeof AppShellAppointmentsConfirmIdIndexRoute
+  '/lara-proposal/complete/$appointmentId': typeof AppShellLaraProposalCompleteAppointmentIdIndexRoute
   '/lara-proposal/initialize/$appointmentId': typeof AppShellLaraProposalInitializeAppointmentIdIndexRoute
 }
 export interface FileRoutesByTo {
@@ -85,7 +101,9 @@ export interface FileRoutesByTo {
   '/lara': typeof AppShellLaraIndexRoute
   '/patients': typeof AppShellPatientsIndexRoute
   '/appointments/create': typeof AppShellAppointmentsCreateIndexRoute
+  '/lara-proposal/contract-sent': typeof AppShellLaraProposalContractSentIndexRoute
   '/appointments/confirm/$id': typeof AppShellAppointmentsConfirmIdIndexRoute
+  '/lara-proposal/complete/$appointmentId': typeof AppShellLaraProposalCompleteAppointmentIdIndexRoute
   '/lara-proposal/initialize/$appointmentId': typeof AppShellLaraProposalInitializeAppointmentIdIndexRoute
 }
 export interface FileRoutesById {
@@ -97,7 +115,9 @@ export interface FileRoutesById {
   '/_appShell/lara/': typeof AppShellLaraIndexRoute
   '/_appShell/patients/': typeof AppShellPatientsIndexRoute
   '/_appShell/appointments/create/': typeof AppShellAppointmentsCreateIndexRoute
+  '/_appShell/lara-proposal/contract-sent/': typeof AppShellLaraProposalContractSentIndexRoute
   '/_appShell/appointments/confirm/$id/': typeof AppShellAppointmentsConfirmIdIndexRoute
+  '/_appShell/lara-proposal/complete/$appointmentId/': typeof AppShellLaraProposalCompleteAppointmentIdIndexRoute
   '/_appShell/lara-proposal/initialize/$appointmentId/': typeof AppShellLaraProposalInitializeAppointmentIdIndexRoute
 }
 export interface FileRouteTypes {
@@ -109,7 +129,9 @@ export interface FileRouteTypes {
     | '/lara'
     | '/patients'
     | '/appointments/create'
+    | '/lara-proposal/contract-sent'
     | '/appointments/confirm/$id'
+    | '/lara-proposal/complete/$appointmentId'
     | '/lara-proposal/initialize/$appointmentId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -119,7 +141,9 @@ export interface FileRouteTypes {
     | '/lara'
     | '/patients'
     | '/appointments/create'
+    | '/lara-proposal/contract-sent'
     | '/appointments/confirm/$id'
+    | '/lara-proposal/complete/$appointmentId'
     | '/lara-proposal/initialize/$appointmentId'
   id:
     | '__root__'
@@ -130,7 +154,9 @@ export interface FileRouteTypes {
     | '/_appShell/lara/'
     | '/_appShell/patients/'
     | '/_appShell/appointments/create/'
+    | '/_appShell/lara-proposal/contract-sent/'
     | '/_appShell/appointments/confirm/$id/'
+    | '/_appShell/lara-proposal/complete/$appointmentId/'
     | '/_appShell/lara-proposal/initialize/$appointmentId/'
   fileRoutesById: FileRoutesById
 }
@@ -183,6 +209,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppShellAppointmentsIndexRouteImport
       parentRoute: typeof AppShellRoute
     }
+    '/_appShell/lara-proposal/contract-sent/': {
+      id: '/_appShell/lara-proposal/contract-sent/'
+      path: '/lara-proposal/contract-sent'
+      fullPath: '/lara-proposal/contract-sent'
+      preLoaderRoute: typeof AppShellLaraProposalContractSentIndexRouteImport
+      parentRoute: typeof AppShellRoute
+    }
     '/_appShell/appointments/create/': {
       id: '/_appShell/appointments/create/'
       path: '/appointments/create'
@@ -195,6 +228,13 @@ declare module '@tanstack/react-router' {
       path: '/lara-proposal/initialize/$appointmentId'
       fullPath: '/lara-proposal/initialize/$appointmentId'
       preLoaderRoute: typeof AppShellLaraProposalInitializeAppointmentIdIndexRouteImport
+      parentRoute: typeof AppShellRoute
+    }
+    '/_appShell/lara-proposal/complete/$appointmentId/': {
+      id: '/_appShell/lara-proposal/complete/$appointmentId/'
+      path: '/lara-proposal/complete/$appointmentId'
+      fullPath: '/lara-proposal/complete/$appointmentId'
+      preLoaderRoute: typeof AppShellLaraProposalCompleteAppointmentIdIndexRouteImport
       parentRoute: typeof AppShellRoute
     }
     '/_appShell/appointments/confirm/$id/': {
@@ -213,7 +253,9 @@ interface AppShellRouteChildren {
   AppShellLaraIndexRoute: typeof AppShellLaraIndexRoute
   AppShellPatientsIndexRoute: typeof AppShellPatientsIndexRoute
   AppShellAppointmentsCreateIndexRoute: typeof AppShellAppointmentsCreateIndexRoute
+  AppShellLaraProposalContractSentIndexRoute: typeof AppShellLaraProposalContractSentIndexRoute
   AppShellAppointmentsConfirmIdIndexRoute: typeof AppShellAppointmentsConfirmIdIndexRoute
+  AppShellLaraProposalCompleteAppointmentIdIndexRoute: typeof AppShellLaraProposalCompleteAppointmentIdIndexRoute
   AppShellLaraProposalInitializeAppointmentIdIndexRoute: typeof AppShellLaraProposalInitializeAppointmentIdIndexRoute
 }
 
@@ -223,8 +265,12 @@ const AppShellRouteChildren: AppShellRouteChildren = {
   AppShellLaraIndexRoute: AppShellLaraIndexRoute,
   AppShellPatientsIndexRoute: AppShellPatientsIndexRoute,
   AppShellAppointmentsCreateIndexRoute: AppShellAppointmentsCreateIndexRoute,
+  AppShellLaraProposalContractSentIndexRoute:
+    AppShellLaraProposalContractSentIndexRoute,
   AppShellAppointmentsConfirmIdIndexRoute:
     AppShellAppointmentsConfirmIdIndexRoute,
+  AppShellLaraProposalCompleteAppointmentIdIndexRoute:
+    AppShellLaraProposalCompleteAppointmentIdIndexRoute,
   AppShellLaraProposalInitializeAppointmentIdIndexRoute:
     AppShellLaraProposalInitializeAppointmentIdIndexRoute,
 }

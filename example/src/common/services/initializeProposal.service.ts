@@ -19,5 +19,6 @@ export function InitializeLaraProposal(): UseMutationResult<
       );
       return data;
     },
+    networkMode: "always",
   });
 }
