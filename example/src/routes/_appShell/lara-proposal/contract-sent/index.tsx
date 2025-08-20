@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import signContract from "@/assets/sendContract.gif";
+import signContract from "@/assets/contractSent.avif";
 
 export const Route = createFileRoute("/_appShell/lara-proposal/contract-sent/")(
   {

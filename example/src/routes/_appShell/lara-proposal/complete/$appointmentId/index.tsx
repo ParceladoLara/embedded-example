@@ -1,7 +1,7 @@
 import { CompleteLaraProposal } from "@/common/services/completeProposal.service";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 
-import sendingGif from "@/assets/send-gif.webp";
+import sendingGif from "@/assets/send-gif.avif";
 import { useEffect } from "react";
 import { nextDisbursementDate } from "@parcelado_lara/payment-plan-wasm";
 

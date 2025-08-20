@@ -1,15 +1,14 @@
-import express, { type Express } from "express";
+import cors from "cors";
 import dotenv from "dotenv";
+import express, { type Express } from "express";
+import { LaraAPI } from "./api/laraAPI";
+import "./database/seed";
+import { AppointmentsRouter } from "./routes/appointments";
 import { CompaniesRouter } from "./routes/companies";
 import { EmployeesRouter } from "./routes/employees";
 import { GatekeeperRouter } from "./routes/gatekeeper";
-import cors from "cors";
-import { WebhooksRouter } from "./routes/webhooks";
-import "./database/seed";
-import { PatientsRouter } from "./routes/patients";
-import { AppointmentsRouter } from "./routes/appointments";
 import { LaraRouter } from "./routes/lara";
-import { LaraAPI } from "./api/laraAPI";
+import { PatientsRouter } from "./routes/patients";
 
 const env = process.env.NODE_ENV || "dev";
 dotenv.config({ path: `.env.${env}` });
@@ -37,7 +36,6 @@ export class Server {
     this.app.use(new CompaniesRouter().router);
     this.app.use(new EmployeesRouter().router);
     this.app.use(new GatekeeperRouter().router);
-    this.app.use(new WebhooksRouter().router);
     this.app.use(new PatientsRouter().router);
     this.app.use(new AppointmentsRouter().router);
     this.app.use(new LaraRouter().router);

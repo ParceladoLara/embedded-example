@@ -1,4 +1,4 @@
-import icon from "@/assets/icon.svg";
+import icon from "@/assets/icon.avif";
 import {
   IconBrandAbstract,
   IconCalendar,
