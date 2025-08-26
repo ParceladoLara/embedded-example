@@ -17,5 +17,9 @@ export class LaraRouter {
     this.router.post("/complete-lara-proposal", (req, res) =>
       new LaraController().complete(req, res)
     );
+
+    this.router.post("/webhooks/lara", (req, res) =>
+      new LaraController().webhook(req, res)
+    );
   }
 }
